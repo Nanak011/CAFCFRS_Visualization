@@ -1,0 +1,18 @@
+column,dtype,distinct,blank_or_NaN,unknown_label,min,max,pct_missing_or_unknown
+ID,str,85458,0,0,,,0.0
+Date,datetime64[us],638,0,0,2024-01-01 00:00:00,2025-09-29 00:00:00,0.0
+Received_Type,str,9,0,14,,,0.0
+Country,str,110,0,16634,,,19.5
+Province,str,66,0,17669,,,20.7
+Fraud_Type,str,33,0,2227,,,2.6
+Solicitation,str,14,0,3468,,,4.1
+Gender,str,5,0,24272,,,28.4
+Language,str,3,0,20733,,,24.3
+Age_Range,str,14,0,24097,,,28.2
+Complaint_Type,str,5,0,562,,,0.7
+Victims,int64,2,0,0,0,1,0.0
+Loss,float64,10675,0,0,0.0,23615000.0,0.0
+Has_Loss,str,2,0,0,,,0.0
+Year,int32,2,0,0,2024,2025,0.0
+Quarter,str,4,0,0,,,0.0
+Month,int32,12,0,0,1,12,0.0

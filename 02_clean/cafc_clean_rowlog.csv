@@ -1,0 +1,6 @@
+step,rows_after
+raw file,350361
+after dropping rows with unreadable dates,350361
+after date filter 2024-01-01..2025-09-30,85458
+after removing duplicate IDs,85458
+final analysis rows,85458

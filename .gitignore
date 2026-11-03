@@ -1,0 +1,20 @@
+# raw data: download it from the official page (see 01_raw/README.md)
+01_raw/*
+!01_raw/README.md
+
+# working files and deliverables that are not part of this repo
+03_tableau/
+04_mockup/
+05_report/
+06_video/
+07_submit/
+evidence/
+cafc_checks.xlsx
+*.twbx
+*.twb
+*.pdf
+*.mp4
+*.zip
+~$*
+.vscode/
+__pycache__/
