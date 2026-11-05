@@ -3,6 +3,7 @@
 Cleaning scripts and documentation for a Tableau dashboard on reported fraud in Canada (coursework, ITS68404 Data Visualization, Taylor's / IIMS College).
 
 Tableau public url: `https://public.tableau.com/app/profile/gurunanak.adhikari/viz/CAFCFRS_Visualization/Dashboard1?publish=yes`
+![alt text](docs/final_dashboard.png)
 ## Source data
 - Dataset: Canadian Anti-Fraud Centre (RCMP), Fraud Reporting System Dataset, Open Government Portal of Canada.
 - Page: https://open.canada.ca/data/en/dataset/6a09c998-cddb-4a22-beff-4dca67ab892f
