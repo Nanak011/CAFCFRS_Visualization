@@ -1,0 +1,29 @@
+BACKGROUND: #FFFFFF
+TEXT_PRIMARY: #222222
+TEXT_SECONDARY: #595959
+NEUTRAL_UNKNOWN: #767676
+RAMP_1_lightest: #f2f0f7
+RAMP_2: #cbc9e2
+RAMP_3: #9e9ac8
+RAMP_4: #756bb1
+RAMP_5_darkest: #54278f
+
+HIGHLIGHT: #a63603
+CATEGORY_2024: #756bb1
+CATEGORY_2025: #54278f
+CONTRAST_TEXT_PRIMARY: 15.9:1
+CONTRAST_TEXT_SECONDARY: 7:1
+CONTRAST_NEUTRAL: 4.54:1
+CONTRAST_HIGHLIGHT: 6.66:1
+CONTRAST_2024: 4.67:1
+CONTRAST_2025: 10.17:1
+CONTRAST_RAMP_1: 1.13:1
+CONTRAST_RAMP_5: 10.17:1
+DEUTERANOPIA_RESULT: 2024 and 2025 distinguishable, ramp order clear
+PROTANOPIA_RESULT: 2024 and 2025 distinguishable, ramp order clear
+
+CONTRAST_RAMP_1_NOTE: fails, so I will outline province shapes and label values
+CATEGORY_NOTE: 2024/2025 differ by lightness (2.18:1 between them); legend, fixed order and bar labels used as well
+
+LABEL_RULE: #222222 text on RAMP_1, RAMP_2, RAMP_3 (14.08, 9.84, 5.99:1); white text on RAMP_4, RAMP_5 (4.67, 10.18:1)
+

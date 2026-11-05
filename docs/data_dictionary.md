@@ -1,0 +1,34 @@
+# Data dictionary: cafc_clean.csv
+
+85,458 rows x 17 columns (13 source columns in English + Has_Loss, Year, Quarter, Month). Period: 1 Jan 2024 to 29 Sep 2025. Source: Canadian Anti-Fraud Centre, Fraud Reporting System, open.canada.ca, Open Government Licence - Canada.
+
+| Field (CSV name) | Name in Tableau | Data type | Tableau role | Allowed values / format | Source or derived | Cleaning applied | Unknown / blank count | What it holds in this project | Used in | CAFC official definition |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ID | ID | Text (unique key) | Dimension; counted as COUNT([ID]) | One value per report | Source | Duplicates checked on ID: 0 found | 0 | One row per report to the CAFC. Counting IDs gives 'Reports' (85,458). | K tiles, Selected measure (Reports), tooltips |  The catalogued and unique number given to each CAFC report for the purposes of maintaining the report database |
+| Date | Date | Date | Dimension, continuous (month in Tip trend) | YYYY-MM-DD, 1 Jan 2024 to 29 Sep 2025 | Source | Converted from text; rows outside 2024-01-01 to 2025-09-30 removed (264,903 rows) | 0 unreadable | Date the report was received. Last report date is 29 Sep 2025 (638 distinct days). | Tip trend, Year/Month derivation |  |
+| Received_Type | Received Type | Text | Dimension | Text labels | Source | Missing labels set to Unknown | 14 | How the report was received. | Not used on the dashboard; kept in the data |  |
+| Country | Country | Text | Dimension, geographic role Country | Country names; Canada plus others | Source | Missing labels set to Unknown; non-Canadian rows kept; one country name has a broken accent in the source (2 rows), left unchanged | 16,634 | Country given on the report. Map filters to Country = Canada. | V2 filter |  |
+| Province | Province | Text | Dimension, geographic role State/Province | Province and territory names | Source | Missing labels set to Unknown; 'North West Territories' and 'Newfoundland And Labrador' matched with Edit Locations in Tableau | 17,669 | Province or territory of the report. | V2 map |  |
+| Fraud_Type | Fraud Type | Text | Dimension (top of hierarchy 'Fraud to solicitation') | Fraud category labels (for example Investments, Romance, Identity Fraud) | Source | Missing labels set to Unknown; 'Other' kept as its own category | 2,227 | Fraud category of the report. | V1, V5, tooltips, Loss per victim |  Type of fraud experienced by the reporting victim, selected through a drop-down list on the CAFC Online Reporting System, or by submitting a description of the fraud to a CAFC intake analyst in a telephone report. |
+| Solicitation | Solicitation | Text | Dimension (child in hierarchy 'Fraud to solicitation') | Solicitation method labels (for example Direct call, Email, Text message) | Source | Missing labels set to Unknown; 'Other/unknown' (22,797 reports) kept as in the source | 3,468 (plus 22,797 'Other/unknown' in the source) | How the person was contacted. Tableau group 'Solicitation (group)' merges Other/unknown and Unknown into 'No usable method' (30.7% of reports). | V3, V5 |  |
+| Gender | Gender | Text | Dimension | Text labels | Source | Missing labels set to Unknown | 24,272 | Gender recorded on the report. | Not used on the dashboard; kept in the data |  |
+| Language | Language | Text | Dimension | Text labels | Source | Missing labels set to Unknown | 20,733 | Language of the report. | Not used on the dashboard; kept in the data |  |
+| Age_Range | Age Range | Text (ordered category) | Dimension, manually sorted | '1 to 9' ... '100 +', Deceased, Business, Unknown | Source | Apostrophe removed; 'N - M' rewritten as 'N to M' (Excel turns 'N - M' into a date); bilingual 'Deceased' and 'Business' reduced to English; missing labels set to Unknown | 24,097 | Age group of the person reporting (Unknown is 24,097 reports and 39.1% of loss). | V4 |  |
+| Complaint_Type | Complaint Type | Text | Dimension | Victim, Attempt and other labels | Source | Missing labels set to Unknown | 562 | Whether the report is a victim report. 'Victim' is the only type with a loss above zero. | Defines the Victims flag |  A report received by the CAFC |
+| Victims | Victims | Whole number (0 or 1 flag) | Measure | 0 or 1 | Source | Converted from text; 0 unparsed | 0 | Equals 1 exactly for Victim complaints (58,950). It is a flag, not a head count, so it is reported as 'Victim reports'. | K3, Selected measure (Victim reports), Loss per victim |  |
+| Loss | Loss | Decimal (dollars, CAD) | Measure | 0 or more; largest $23,615,000 | Source | $ and commas removed; converted to number; 0 unparsed; negative values: 0 | 0 unreadable | Reported dollar loss. 26,525 reports have a loss above zero; 58,933 report $0. Total $1,186,937,312.10. | K1, V1 to V5, Loss per victim | Total amount of money lost to the instance(s) of fraud |
+| Has_Loss | Has Loss | Text | Dimension | Yes or No | Derived in Python | Yes if Loss > 0, otherwise No | 0 | Flags whether a report has a recorded loss. | Filtering and checks (pivots P6a, P6b) |  |
+| Year | Year | Whole number | Dimension | 2024 or 2025 | Derived in Python | From Date | 0 | Year of the report. | V3 |  |
+| Quarter | Quarter | Text | Dimension | Q1 to Q4 | Derived in Python | From Date | 0 | Quarter of the report. | Not used on the dashboard; kept in the data |  |
+| Month | Month | Whole number | Dimension (filter 1 to 9 on V3) | 1 to 12 | Derived in Python | From Date | 0 | Month number of the report; V3 keeps months 1 to 9 so 2024 and 2025 are comparable. | V3 filter |  |
+
+## Fields created in Tableau
+
+| Item | Type | Definition (as built) | Purpose | Where used |
+|---|---|---|---|---|
+| Choose measure | Parameter (string) | List: Loss / Victims / ID, displayed as Reported loss / Victim reports / Reports | Lets one control change the measure | Dashboard control |
+| Selected measure | Calculated field | CASE [Choose measure] WHEN "Loss" THEN SUM([Loss]) WHEN "Victims" THEN SUM([Victims]) WHEN "ID" THEN COUNT([ID]) END | Single field that follows the parameter | V1 to V4, Tip trend |
+| Loss per victim | Calculated field (FIXED LOD) | { FIXED [Fraud Type] : SUM([Loss]) } / { FIXED [Fraud Type] : SUM([Victims]) } | Average reported loss per victim report for each fraud type; unchanged by other fields in the view | V1 and V5 tooltips |
+| YoY change | Calculated field (table calculation) | (ZN([Selected measure]) - LOOKUP(ZN([Selected measure]), -1)) / ABS(LOOKUP(ZN([Selected measure]), -1)), computed across Year | Percent change from Jan to Sep 2024 to Jan to Sep 2025 | V3 tooltip |
+| Solicitation (group) | Group | Other/unknown and Unknown merged into 'No usable method' | Show the share with no usable method as one bar | V3 |
+| Fraud to solicitation | Hierarchy | Fraud Type > Solicitation | Drill from fraud type to method | V1, V5 |
