@@ -2,7 +2,7 @@
 
 Cleaning scripts and documentation for a Tableau dashboard on reported fraud in Canada (coursework, ITS68404 Data Visualization, Taylor's / IIMS College).
 
-Tableau public Dashboard: `https://public.tableau.com/app/profile/gurunanak.adhikari/viz/CAFCFRS_Visualization/Dashboard1`
+Tableau public Dashboard: https://public.tableau.com/app/profile/gurunanak.adhikari/viz/CAFCFRS_Visualization/Dashboard1
 
 ![alt text](docs/tableau_dashboard.png)
 ## Source data
